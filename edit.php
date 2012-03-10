@@ -1,5 +1,5 @@
 <?php
-
+require_once 'includes/filter-wrapper.php';
 require_once 'includes/db.php';
 $errors = array();
 
@@ -9,21 +9,21 @@ if(empty($id)) {
 	header('Location:index.php');
 }
 
-$name = filter_input(INPUT_POST, 'Name',FILTER_SANITIZE_STRING);
-$release_date = filter_input(INPUT_POST,'Release_Date',FILTER_SANITIZE_STRING);
-$director = filter_input(INPUT_POST,'Director',FILTER_SANITIZE_STRING);
+$name = filter_input(INPUT_POST, 'name',FILTER_SANITIZE_STRING);
+$release_date = filter_input(INPUT_POST,'release_date',FILTER_SANITIZE_STRING);
+$director = filter_input(INPUT_POST,'director',FILTER_SANITIZE_STRING);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if(empty($movie)){
-		$errors['Name'] = true;
+	if(empty($name)){
+		$errors['name'] = true;
 	}
 	
 	if(empty($release_date)){
-		$errors['Release_Date']=true;
+		$errors['release_date']=true;
 	}
 	
 	if(empty($director)){
-		$errors['Director']=true;
+		$errors['director']=true;
 	}
 	
 	if(empty($errors)){
@@ -31,12 +31,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		
 		$sql = $db->prepare('
 		   UPDATE movies
-		   SET Name = :Name, Release_Date = :release_date, Director =:director
+		   SET name = :name, release_date = :release_date, director =:director
 		   WHERE id = :id
 		   ');
-		$sql->bindValue(':Name', $Nmae,PDO::PARAM_STR);
-		$sql->bindValue(':Release_Date', $release_date, PDO::PARAM_STR);
-		$sql->bindValue(':Director', $director, PDO::PARAM_STR);
+		$sql->bindValue(':name', $name,PDO::PARAM_STR);
+		$sql->bindValue(':release_date', $release_date, PDO::PARAM_STR);
+		$sql->bindValue(':director', $director, PDO::PARAM_STR);
 		$sql->bindValue(':id', $id,PDO::PARAM_INT);
 		$sql->execute();
 		
@@ -47,7 +47,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
      require_once 'includes/db.php';
 	 
 	 $sql = $db->prepare('
-	 SELECT id, Name, Release_Date, Director
+	 SELECT id, name, release_date, director
 	 FROM movies
 	 WHERE id = :id
 	 ');
@@ -56,9 +56,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	 $sql->execute();
 	 $results = $sql->fetch();
 	 
-	 $name= $results['Name'];
-	 $release_date = $results['Release_Date'];
-	 $director= $results['Director'];
+	 $name= $results['name'];
+	 $release_date = $results['release_date'];
+	 $director= $results['director'];
 }
 
 ?>
@@ -75,15 +75,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
       
     <form method= "post" action="edit.php?id=<?php echo $id; ?>">
       <div>
-         <label for="name">Movie Name<?php if (isset($errors['Name'])):?> <strong>is required</strong><?php endif;?></label>
+         <label for="name">Movie Name<?php if (isset($errors['name'])):?> <strong>is required</strong><?php endif;?></label>
          <input id = "name" name="name" value="<?php echo $name; ?>"required>
       </div>
       <div>
-         <label for="release_date">Release Date<?php if (isset($errors['Release_Date'])):?> <strong>is required</strong><?php endif;?></label>
+         <label for="release_date">Release Date<?php if (isset($errors['release_date'])):?> <strong>is required</strong><?php endif;?></label>
          <input id = "release_date" name="release_date" value="<?php echo $release_date; ?>" required>
       </div>
        <div>
-         <label for="director">Director<?php if (isset($errors['Director'])):?> <strong>is required</strong><?php endif;?></label>
+         <label for="director">Director<?php if (isset($errors['director'])):?> <strong>is required</strong><?php endif;?></label>
          <input id = "director" name="director" value="<?php echo $director; ?>" required>
       </div>
          <button type="submit">Edit</button>

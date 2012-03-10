@@ -1,4 +1,5 @@
 <?php 
+require_once 'includes/filter-wrapper.php';
 require_once 'includes/db.php';
 
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
@@ -11,7 +12,7 @@ if(empty($id)){
 //without an ID there is no point connecting to the data base.
 
 // -->prepare() allows us to execute SQL with user input.
-$sql = $db->prepare('SELECT id, Name, Release_Date, Director
+$sql = $db->prepare('SELECT id, name, release_date, director
 					 FROM movies
 					 WHERE id= :id
  
@@ -43,9 +44,9 @@ if(empty($results)){
 </head>
 
 <body>
-   <h1><?php echo $results['Name'];?></h1>
-   <p>Release_Date: <?php echo $results['Release_Date'];?></p>
-   <p>Director: <?php echo $results['Director'];?></p>
+   <h1><?php echo $results['name'];?></h1>
+   <p>Release_Date: <?php echo $results['release_date'];?></p>
+   <p>Director: <?php echo $results['director'];?></p>
 
 
 </body>

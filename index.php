@@ -1,11 +1,11 @@
 <?php
-
+require_once 'includes/filter-wrapper.php';
 require_once 'includes/db.php';
 //var_dump($db);
 
 //->exec() allows us to perform SQL and not expect results
 //->query()allows us to perform SQL and expect results
-$results = $db->query('SELECT id,Name,Release_Date,Director
+$results = $db->query('SELECT id,name,release_date,director
                        FROM movies 
 					   ORDER BY Name ASC'
 					  );
@@ -30,10 +30,11 @@ $results = $db->query('SELECT id,Name,Release_Date,Director
      ?>
  
         <?php foreach ($results as $movie) :?> 
-		<li><a href="single.php?id=<?php echo $movie['id'];?>"><?php echo $movie['Name'] ; ?></a> 
+		<li><a href="single.php?id=<?php echo $movie['id'];?>"><?php echo $movie['name'] ; ?></a> 
         &bull;
         <a href ="delete.php?id=<?php echo $movie['id'];?>">Delete</a>
         <a href ="edit.php?id=<?php echo $movie['id'];?>">Edit</a>
+        <a href ="add.php?id=<?php echo $movie['id'];?>">Add</a>
        
         </li>
         <?php endforeach; ?>
